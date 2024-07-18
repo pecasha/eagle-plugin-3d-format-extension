@@ -1,0 +1,54 @@
+{
+    "id": "89fb801f-7761-4de6-b7ce-3785a084edaf",
+    "version": "1.4.1",
+    "platform": "all",
+    "arch": "all",
+    "name": "{{manifest.app.name}}",
+    "logo": "/logo.png",
+    "devTools": true,
+    "keywords": [
+        "glb",
+        "gltf",
+        "fbx",
+        "vtk",
+        "obj",
+        "stl",
+        "dae",
+        "ply",
+        "Spline",
+        "usdz",
+        "usdc",
+        "HDRI",
+        "hdr",
+        "exr",
+        "3dm"
+    ],
+    "fallbackLanguage": "zh_CN",
+    "languages": [
+        "de_DE",
+        "en",
+        "es_ES",
+        "ja_JP",
+        "ko_KR",
+        "ru_RU",
+        "zh_CN",
+        "zh_TW"
+    ],
+    "preview": {
+        "glb,gltf,fbx,vtk,obj,stl,dae,ply,spline,splinecode,usdz,usdc,3dm": {
+            "thumbnail": {
+                "path": "thumbnail.js",
+                "allowZoom": false,
+                "size": 400
+            },
+            "viewer": {
+                "path": "viewer.html"
+            }
+        },
+        "hdr,exr": {
+            "viewer": {
+                "path": "viewer.html"
+            }
+        }
+    }
+}

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" ondragstart="return false">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="referrer" content="no-referrer">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="email=no">
+    <meta name="format-detection" content="address=no">
+    <meta name="fragment" content="!">
+    <meta name="author" content="pecasha">
+    <title>3D Format Extensions - Thumbnail Test</title>
+</head>
+
+<body>
+    <div id="renderer"></div>
+    <script>
+        const fs = require("fs");
+        const path = require("path");
+        const { setTimeout } = require("node:timers/promises");
+        const Core = require("../core/index.ts");
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const filePath = urlParams.get("path");
+        const suffix = filePath.substring(filePath.lastIndexOf(".") + 1);
+
+        (async function() {
+            const dom = document.createElement("div");
+            dom.style.width = "1000px";
+            dom.style.height = "1000px";
+            const core = new Core({
+                dom,
+                resizeable: false,
+                scale: .4,
+                calcSizeMode: true,
+                devicePixelRatio: window.devicePixelRatio,
+                KTX2TranscoderPath: path.join(`${__dirname}/lib/basis/`),
+                DRACODecoderPath: path.join(`${__dirname}/lib/draco/`),
+                hdrPath: path.join(`${__dirname}/lib/hdr/background.hdr`)
+            });
+
+            await core.preview.loadFile(filePath, suffix);
+            if(suffix === "ply" || suffix === "stl") {
+                await setTimeout(100);
+            }
+            const size = core.preview.getSize();
+            let width = Math.abs(Math.ceil(size.width));
+            let height = Math.abs(Math.ceil(size.height));
+            if(width > 1000 || height > 1000) {
+                const rate = width > 1000 ? 500 / width : height > 1000 ? 500 / height : 1;
+                width = Math.ceil(width * rate);
+                height = Math.ceil(height * rate);
+            }
+
+            const screenshotDom = document.getElementById("renderer");
+            screenshotDom.style.width = `${width}px`;
+            screenshotDom.style.height = `${height}px`;
+            const screenshotCore = new Core({
+                dom: screenshotDom,
+                width,
+                height,
+                screenshotMode: true,
+                devicePixelRatio: window.devicePixelRatio,
+                KTX2TranscoderPath: path.join(`${__dirname}/lib/basis/`),
+                DRACODecoderPath: path.join(`${__dirname}/lib/draco/`),
+                hdrPath: path.join(`${__dirname}/lib/hdr/background.hdr`)
+            });
+            await screenshotCore.preview.loadFile(filePath, suffix);
+        })();
+    </script>
+</body>
+</html>

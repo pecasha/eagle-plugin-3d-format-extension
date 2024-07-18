@@ -1,0 +1,16 @@
+{
+    "manifest": {
+        "app": {
+            "name": "3D 格式擴充"
+        }
+    },
+    "error": {
+        "common": {
+            "title": "3D 格式擴充插件錯誤",
+            "unknown": "未知錯誤"
+        },
+        "core": {
+            "textureMissing": "貼圖缺失"
+        }
+    }
+}

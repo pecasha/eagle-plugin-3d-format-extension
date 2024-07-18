@@ -1,0 +1,16 @@
+{
+    "manifest": {
+        "app": {
+            "name": "Extensiones de formato 3D"
+        }
+    },
+    "error": {
+        "common": {
+            "title": "Error del complemento de extensiones de formato 3D",
+            "unknown": "Error desconocido"
+        },
+        "core": {
+            "textureMissing": "Falta textura"
+        }
+    }
+}
