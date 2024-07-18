@@ -1,0 +1,16 @@
+{
+    "manifest": {
+        "app": {
+            "name": "3D 형식 확장"
+        }
+    },
+    "error": {
+        "common": {
+            "title": "3D 형식 확장 플러그인 오류",
+            "unknown": "알수없는 오류"
+        },
+        "core": {
+            "textureMissing": "텍스처 누락"
+        }
+    }
+}

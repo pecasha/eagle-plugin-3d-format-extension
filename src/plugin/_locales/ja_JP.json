@@ -1,0 +1,16 @@
+{
+    "manifest": {
+        "app": {
+            "name": "3D 形式拡張機能"
+        }
+    },
+    "error": {
+        "common": {
+            "title": "3D 形式拡張プラグイン エラー",
+            "unknown": "不明なエラー"
+        },
+        "core": {
+            "textureMissing": "テクスチャがありません"
+        }
+    }
+}

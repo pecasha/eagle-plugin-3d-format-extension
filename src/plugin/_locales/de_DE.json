@@ -1,0 +1,16 @@
+{
+    "manifest": {
+        "app": {
+            "name": "3D-Formaterweiterungen"
+        }
+    },
+    "error": {
+        "common": {
+            "title": "Fehler beim 3D-Formaterweiterungen-Plugin",
+            "unknown": "Unbekannter Fehler"
+        },
+        "core": {
+            "textureMissing": "Textur fehlt"
+        }
+    }
+}

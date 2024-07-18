@@ -1,0 +1,43 @@
+{
+    "name": "eagle-plugin-3d-format-extension",
+    "version": "1.4.1",
+    "description": "Eagle 3D 格式扩展插件",
+    "author": "pecasha<chihai@pecasha.com>",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/pecasha/eagle-plugin-3d-format-extension.git"
+    },
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "build:test": "npm run bundle",
+        "build:prod": "npm run bundle -- --prod",
+        "test:thumbnail": "npm run bundle -- --test-thumbnail",
+        "bundle": "rollup -c --bundleConfigAsCjs & gulp build",
+        "up": "pnpm update -i --latest"
+    },
+    "dependencies": {
+        "@pecasha/3d-preview-core": "^1.1.0"
+    },
+    "devDependencies": {
+        "@rollup/plugin-commonjs": "^25.0.8",
+        "@rollup/plugin-node-resolve": "^15.2.3",
+        "@rollup/plugin-terser": "^0.4.4",
+        "@types/node": "^20.14.9",
+        "gulp": "^4.0.2",
+        "gulp-clean": "^0.4.0",
+        "gulp-csso": "^4.0.1",
+        "gulp-htmlmin": "^5.0.1",
+        "gulp-inject": "^5.0.5",
+        "gulp-json-editor": "^2.6.0",
+        "gulp-jsonmin": "^1.2.0",
+        "gulp-less": "^5.0.0",
+        "gulp-replace": "^1.1.4",
+        "gulp-uglify": "^3.0.2",
+        "i18next": "^23.11.5",
+        "rollup": "^4.18.0",
+        "rollup-plugin-typescript2": "^0.36.0",
+        "typescript": "^5.5.2"
+    }
+}

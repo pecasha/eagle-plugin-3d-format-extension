@@ -1,0 +1,16 @@
+{
+    "manifest": {
+        "app": {
+            "name": "3D Format Extensions"
+        }
+    },
+    "error": {
+        "common": {
+            "title": "3D Format Extensions Plugin Error",
+            "unknown": "Unknown Error"
+        },
+        "core": {
+            "textureMissing": "Texture Missing"
+        }
+    }
+}
