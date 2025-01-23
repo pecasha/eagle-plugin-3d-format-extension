@@ -18,13 +18,14 @@
         "up": "pnpm update -i --latest"
     },
     "dependencies": {
-        "@pecasha/3d-preview-core": "^1.1.0"
+        "@pecasha/3d-preview-core": "^1.1.1"
     },
     "devDependencies": {
-        "@rollup/plugin-commonjs": "^25.0.8",
-        "@rollup/plugin-node-resolve": "^15.2.3",
+        "@rollup/plugin-commonjs": "^28.0.2",
+        "@rollup/plugin-node-resolve": "^16.0.0",
         "@rollup/plugin-terser": "^0.4.4",
-        "@types/node": "^20.14.9",
+        "@rollup/plugin-typescript": "^12.1.2",
+        "@types/node": "^22.10.8",
         "gulp": "^4.0.2",
         "gulp-clean": "^0.4.0",
         "gulp-csso": "^4.0.1",
@@ -36,8 +37,7 @@
         "gulp-replace": "^1.1.4",
         "gulp-uglify": "^3.0.2",
         "i18next": "^23.11.5",
-        "rollup": "^4.18.0",
-        "rollup-plugin-typescript2": "^0.36.0",
-        "typescript": "^5.5.2"
+        "rollup": "^4.31.0",
+        "typescript": "^5.7.3"
     }
 }

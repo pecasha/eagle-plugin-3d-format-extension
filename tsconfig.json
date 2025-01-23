@@ -2,13 +2,13 @@
     "compilerOptions": {
         "module": "esnext",
         "target": "esnext",
-        "declaration": true,
-        "composite": true,
-        "strict": true,
         "experimentalDecorators": true,
-        "skipLibCheck": true,
+        "strict": true,
+        "sourceMap": false,
         "esModuleInterop": true,
+        "skipLibCheck": true,
         "allowSyntheticDefaultImports": true,
+        "declaration": true,
         "moduleResolution": "node",
         "useDefineForClassFields": true,
         "lib": [
