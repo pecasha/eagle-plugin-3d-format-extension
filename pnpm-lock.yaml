@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@pecasha/3d-preview-core':
-        specifier: ^1.1.1
-        version: 1.1.1
+        specifier: ^1.2.0
+        version: 1.2.0
     devDependencies:
       '@rollup/plugin-commonjs':
         specifier: ^28.0.2
@@ -104,8 +104,8 @@ packages:
   '@one-ini/wasm@0.1.1':
     resolution: {integrity: sha512-XuySG1E38YScSJoMlqovLru4KTUNSjgVTIjyh7qMX6aNN5HY5Ct5LhRJdxO79JtTzKfzV/bnWpz+zquYrISsvw==}
 
-  '@pecasha/3d-preview-core@1.1.1':
-    resolution: {integrity: sha512-N0UTvKNC8MIoRChL67VJyci60Zqcaay/x7iKoCokSM2KFxFYq0WhUCPnRONqj+sZs9DmbNLpqyCu+kw/zPxU0Q==, tarball: https://npm.pkg.github.com/download/@pecasha/3d-preview-core/1.1.1/723f9f43112135c7b50c99f0e33c43da9626bdac}
+  '@pecasha/3d-preview-core@1.2.0':
+    resolution: {integrity: sha512-cwYbw4+ydIwpAu7HgopZK1RRgHQxc8LHiM+LWzF25sfCuNi4Y3JVZlk74TJTZ2xNrRoa+z+8uDdcBGc7aNU9UA==, tarball: https://npm.pkg.github.com/download/@pecasha/3d-preview-core/1.2.0/35b89ca24fdd9bbc9484d1b2fb23b9557ff1b286}
 
   '@pecasha/three-usdz-loader@1.0.0':
     resolution: {integrity: sha512-p7G+UreV4WGGandCJ08FcypjCTqIZsXyC6loSbrtpoz06tstvYJQUbexB35qMyfoQHQk7aAklENcKNaMrCpacQ==, tarball: https://npm.pkg.github.com/download/@pecasha/three-usdz-loader/1.0.0/413098f1903820eb2940e222ffc6d1b18269143c}
@@ -298,8 +298,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@splinetool/runtime@1.9.59':
-    resolution: {integrity: sha512-EX+/4xCMAr22dR7ZgR+HNVc0ZwDO8y9CxlKJMqP2BEUP3oe5RAouTyn5uUHgOEHQ1JQ0VSV8vARfdigQ/hyI7w==}
+  '@splinetool/runtime@1.9.68':
+    resolution: {integrity: sha512-E6hOIFCd9G8mlqfP2n6tTzKOltUdDnZSo1shkANInMb9ihK7vLLqtZRm0GiZHgcFnmUH7DKCk1mGlUFe9OSLrQ==}
 
   '@types/estree@1.0.5':
     resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}
@@ -2111,11 +2111,11 @@ snapshots:
 
   '@one-ini/wasm@0.1.1': {}
 
-  '@pecasha/3d-preview-core@1.1.1':
+  '@pecasha/3d-preview-core@1.2.0':
     dependencies:
       '@pecasha/three-usdz-loader': 1.0.0
       '@pecasha/util': 2.1.4
-      '@splinetool/runtime': 1.9.59
+      '@splinetool/runtime': 1.9.68
       dat.gui: 0.7.9
       mitt: 3.0.1
       stats.js: 0.17.0
@@ -2262,7 +2262,7 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.31.0':
     optional: true
 
-  '@splinetool/runtime@1.9.59':
+  '@splinetool/runtime@1.9.68':
     dependencies:
       on-change: 4.0.2
       semver-compare: 1.0.0

@@ -21,7 +21,8 @@
         "HDRI",
         "hdr",
         "exr",
-        "3dm"
+        "3dm",
+        "3mf"
     ],
     "fallbackLanguage": "zh_CN",
     "languages": [
@@ -35,7 +36,7 @@
         "zh_TW"
     ],
     "preview": {
-        "glb,gltf,fbx,vtk,obj,stl,dae,ply,spline,splinecode,usdz,usdc,3dm": {
+        "glb,gltf,fbx,vtk,obj,stl,dae,ply,spline,splinecode,usdz,usdc,3dm,3mf": {
             "thumbnail": {
                 "path": "thumbnail.js",
                 "allowZoom": false,

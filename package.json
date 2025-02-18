@@ -18,7 +18,7 @@
         "up": "pnpm update -i --latest"
     },
     "dependencies": {
-        "@pecasha/3d-preview-core": "^1.1.1"
+        "@pecasha/3d-preview-core": "^1.2.0"
     },
     "devDependencies": {
         "@rollup/plugin-commonjs": "^28.0.2",
