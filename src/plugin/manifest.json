@@ -23,9 +23,14 @@
         "exr",
         "3dm",
         "3mf",
-        "amf"
+        "amf",
+        "lwo",
+        "3ds",
+        "pcd",
+        "vox",
+        "xyz"
     ],
-    "fallbackLanguage": "zh_CN",
+    "fallbackLanguage": "en",
     "languages": [
         "de_DE",
         "en",
@@ -37,7 +42,7 @@
         "zh_TW"
     ],
     "preview": {
-        "glb,gltf,fbx,vtk,obj,stl,dae,ply,spline,splinecode,usdz,usdc,3dm,3mf,amf": {
+        "glb,gltf,fbx,vtk,obj,stl,dae,ply,spline,splinecode,usdz,usdc,3dm,3mf,amf,lwo,3ds,pcd,vox,xyz": {
             "thumbnail": {
                 "path": "thumbnail.js",
                 "allowZoom": false,
