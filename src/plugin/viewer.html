@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ondragstart="return false" oncontextmenu="return false">
+<html lang="en" ondragstart="return false">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -22,6 +22,21 @@
     <div class="error-output"><p></p></div>
     <div id="renderer"
          class="renderer hide"></div>
+    <div class="progress hide">
+        <i class="icon-pause btn"></i>
+        <p><em class="cursor"></em></p>
+        <span class="duration">
+            <em class="duration-current">00:00</em>
+            <small>/</small>
+            <em class="duration-total">00:00</em>
+        </span>
+        <span class="select">
+            <em class="name hide"></em>
+            <i class="icon-sanjiaojiantou"></i>
+        </span>
+        <i class="icon-tupiansuolvetu thumbnail"></i>
+    </div>
+    <ul class="animation-list"></ul>
     <!-- inject:js -->
     <script src="./viewer.js"></script>
     <!-- endinject -->

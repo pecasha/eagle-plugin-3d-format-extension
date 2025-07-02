@@ -18,14 +18,17 @@
         "up": "pnpm update -i --latest"
     },
     "dependencies": {
-        "@pecasha/3d-preview-core": "^1.4.1"
+        "@pecasha/3d-preview-core": "^1.4.5",
+        "@pomerun/util": "^1.2.2",
+        "jimp": "^1.6.0"
     },
     "devDependencies": {
         "@rollup/plugin-commonjs": "^28.0.6",
+        "@rollup/plugin-json": "^6.1.0",
         "@rollup/plugin-node-resolve": "^16.0.1",
         "@rollup/plugin-terser": "^0.4.4",
-        "@rollup/plugin-typescript": "^12.1.2",
-        "@types/node": "^24.0.3",
+        "@rollup/plugin-typescript": "^12.1.4",
+        "@types/node": "^24.0.10",
         "gulp": "^4.0.2",
         "gulp-clean": "^0.4.0",
         "gulp-csso": "^4.0.1",
@@ -36,8 +39,8 @@
         "gulp-less": "^5.0.0",
         "gulp-replace": "^1.1.4",
         "gulp-uglify": "^3.0.2",
-        "i18next": "^25.2.1",
-        "rollup": "^4.44.0",
+        "i18next": "^25.3.0",
+        "rollup": "^4.44.1",
         "typescript": "^5.8.3"
     }
 }

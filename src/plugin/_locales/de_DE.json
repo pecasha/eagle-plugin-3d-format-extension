@@ -12,5 +12,10 @@
         "core": {
             "textureMissing": "Textur fehlt"
         }
+    },
+    "page": {
+        "thumbnailTips": "Aktuelle Ansicht als Datei-Miniaturansicht festlegen?",
+        "ok": "OK",
+        "cancel": "Abbrechen"
     }
 }

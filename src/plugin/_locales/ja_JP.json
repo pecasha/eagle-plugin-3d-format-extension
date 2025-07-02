@@ -12,5 +12,10 @@
         "core": {
             "textureMissing": "テクスチャがありません"
         }
+    },
+    "page": {
+        "thumbnailTips": "現在の表示をファイルのサムネイルとして設定しますか？",
+        "ok": "OK",
+        "cancel": "キャンセル"
     }
 }

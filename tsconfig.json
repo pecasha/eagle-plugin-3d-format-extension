@@ -20,7 +20,7 @@
         "outDir": "./build"
     },
     "include": [
-        "src/core/**/*.ts"
+        "src/core"
     ],
     "exclude": [
         "node_modules"

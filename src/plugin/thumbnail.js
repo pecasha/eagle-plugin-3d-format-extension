@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const { setTimeout } = require("node:timers/promises");
-const Core = require("../core/index.ts");
+const { Core } = require("../core/index.ts");
 
 module.exports = async ({ src, dest, item }) => {
     return new Promise(async (resolve, reject) => {

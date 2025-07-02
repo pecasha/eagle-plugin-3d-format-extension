@@ -12,5 +12,10 @@
         "core": {
             "textureMissing": "貼圖缺失"
         }
+    },
+    "page": {
+        "thumbnailTips": "要將目前畫面設為檔案縮圖嗎？",
+        "ok": "確定",
+        "cancel": "取消"
     }
 }

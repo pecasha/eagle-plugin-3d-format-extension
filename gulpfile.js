@@ -30,7 +30,12 @@ gulp.task('build:lib', gulp.series('build:core', () => {
                .pipe(gulp.dest('./dist/lib'));
 }));
 
-gulp.task('build:js', gulp.series('build:lib', () => {
+gulp.task('build:modules', gulp.series('build:core', () => {
+    return gulp.src('./src/plugin/modules/**/*.*')
+    .pipe(gulp.dest('./dist/modules'));
+}));
+
+gulp.task('build:js', gulp.series('build:lib', 'build:modules', () => {
     const pipes = gulp.src(['./src/plugin/**/*.js', '!./src/plugin/lib/**/*.js']);
     if(isProd) {
         pipes.pipe(uglify());

@@ -12,5 +12,10 @@
         "core": {
             "textureMissing": "텍스처 누락"
         }
+    },
+    "page": {
+        "thumbnailTips": "현재 화면을 파일 썸네일로 설정하시겠습니까?",
+        "ok": "확인",
+        "cancel": "취소"
     }
 }

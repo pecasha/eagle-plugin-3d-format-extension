@@ -12,5 +12,10 @@
         "core": {
             "textureMissing": "Falta textura"
         }
+    },
+    "page": {
+        "thumbnailTips": "¿Desea establecer la vista actual como miniatura del archivo?",
+        "ok": "Aceptar",
+        "cancel": "Cancelar"
     }
 }
