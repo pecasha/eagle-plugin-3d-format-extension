@@ -1,19 +1,19 @@
-const gulp = require('gulp');
-const clean = require('gulp-clean');
-const replace = require('gulp-replace');
-const less = require('gulp-less');
-const htmlmin = require('gulp-htmlmin');
-const uglify = require('gulp-uglify');
-const csso = require('gulp-csso');
-const inject = require('gulp-inject');
-const jsonmin = require('gulp-jsonmin');
-const jsonEditor = require('gulp-json-editor');
+import gulp from "gulp";
+import clean from "gulp-clean";
+import replace from "gulp-replace";
+import less from "gulp-less";
+import htmlmin from "gulp-htmlmin";
+import uglify from "gulp-uglify";
+import csso from "gulp-csso";
+import inject from "gulp-inject";
+import jsonmin from "gulp-jsonmin";
+import jsonEditor from "gulp-json-editor";
 
 const isProd = process.title.includes("--prod");
 const isTestThumbnail = process.title.includes("--test-thumbnail");
 
 gulp.task('clean', () => {
-    return gulp.src('./dist', {
+    return gulp.src('./static', {
                     read: false,
                     allowEmpty: true
                 })
@@ -21,63 +21,63 @@ gulp.task('clean', () => {
 });
 
 gulp.task('build:core', () => {
-    return gulp.src('./build/core.js')
-               .pipe(gulp.dest('./dist/lib'));
+    return gulp.src('./format/build/core.cjs')
+               .pipe(gulp.dest('./static/lib'));
 });
 
 gulp.task('build:lib', gulp.series('build:core', () => {
-    return gulp.src('./src/plugin/lib/**/*.*')
-               .pipe(gulp.dest('./dist/lib'));
+    return gulp.src('./format/plugin/lib/**/*.*')
+               .pipe(gulp.dest('./static/lib'));
 }));
 
 gulp.task('build:modules', gulp.series('build:core', () => {
-    return gulp.src('./src/plugin/modules/**/*.*')
-    .pipe(gulp.dest('./dist/modules'));
+    return gulp.src('./format/plugin/modules/**/*.*')
+    .pipe(gulp.dest('./static/modules'));
 }));
 
 gulp.task('build:js', gulp.series('build:lib', 'build:modules', () => {
-    const pipes = gulp.src(['./src/plugin/**/*.js', '!./src/plugin/lib/**/*.js']);
+    const pipes = gulp.src(['./format/plugin/**/*.js', '!./format/plugin/lib/**/*.js']);
     if(isProd) {
         pipes.pipe(uglify());
     }
-    return pipes.pipe(gulp.dest('./dist'));
+    return pipes.pipe(gulp.dest('./static'));
 }));
 
 gulp.task('build:less', () => {
-    const pipes = gulp.src('./src/plugin/**/*.less')
+    const pipes = gulp.src('./format/plugin/**/*.less')
                       .pipe(less());
     if(isProd) {
         pipes.pipe(csso());
     }
-    return pipes.pipe(gulp.dest('./dist'));
+    return pipes.pipe(gulp.dest('./static'));
 });
 
 gulp.task('build:image', () => {
-    return gulp.src('./src/plugin/**/*.*(png|jpg|jpeg|gif|svg|webp)')
-               .pipe(gulp.dest('./dist'));
+    return gulp.src('./format/plugin/**/*.*(png|jpg|jpeg|gif|svg|webp)')
+               .pipe(gulp.dest('./static'));
 });
 
 gulp.task('build:json', () => {
-    const pipes = gulp.src('./src/plugin/**/*.json');
+    const pipes = gulp.src('./format/plugin/**/*.json');
     if(isProd) {
         pipes.pipe(jsonmin());
     }
-    return pipes.pipe(gulp.dest('./dist'));
+    return pipes.pipe(gulp.dest('./static'));
 });
 
 gulp.task('build:html', () => {
-    const pipes = gulp.src('./src/plugin/*.html');
+    const pipes = gulp.src('./format/plugin/*.html');
     if(isProd) {
         pipes.pipe(htmlmin({
             collapseWhitespace: true
         }));
     }
-    return pipes.pipe(gulp.dest('./dist'));
+    return pipes.pipe(gulp.dest('./static'));
 });
 
 gulp.task('replace:html', () => {
-    return gulp.src('./dist/*.html')
-               .pipe(inject(gulp.src(['./dist/*.css', './dist/*.js', '!./dist/thumbnail.js']), {
+    return gulp.src('./static/*.html')
+               .pipe(inject(gulp.src(['./static/*.css', './static/*.js', '!./static/thumbnail.js']), {
                    relative: true,
                    removeTags: true,
                    transform: (filePath, file) => {
@@ -90,11 +90,11 @@ gulp.task('replace:html', () => {
                        return file.contents.toString('utf8');
                    }
                }))
-               .pipe(gulp.dest('./dist'));
+               .pipe(gulp.dest('./static'));
 });
 
 gulp.task('replace:manifest', () => {
-    const pipes = gulp.src('./dist/manifest.json')
+    const pipes = gulp.src('./static/manifest.json')
                       .pipe(jsonEditor(json => {
                           json.devTools = !isProd;
                           if(isTestThumbnail) {
@@ -108,21 +108,21 @@ gulp.task('replace:manifest', () => {
     if(isProd) {
         pipes.pipe(jsonmin());
     }
-    return pipes.pipe(gulp.dest('./dist'));
+    return pipes.pipe(gulp.dest('./static'));
 });
 
 gulp.task('build:rev', gulp.series('build:image', 'build:json', 'build:less', 'build:js', 'build:html', () => {
-    return gulp.src('./dist/**/*.*(html|js|css)')
+    return gulp.src('./static/**/*.*(html|js|css)')
                .pipe(replace('.less', '.css'))
-               .pipe(replace('.ts', '.js'))
+               .pipe(replace('.ts', '.cjs'))
                .pipe(replace('../core/index', './lib/core'))
-               .pipe(gulp.dest('./dist'));
+               .pipe(gulp.dest('./static'));
 }));
 
 gulp.task('build', gulp.series('clean', 'build:rev', 'replace:html', 'replace:manifest', () => {
-    const files = ['./build', './dist/*.css', './dist/*.js', '!./dist/thumbnail.js'];
+    const files = ['./format/build', './static/*.css', './static/*.js', '!./static/thumbnail.js'];
     if(isProd) {
-        files.push('./dist/*.test.*');
+        files.push('./static/*.test.*');
     }
     return gulp.src(files, {
                     read: false

@@ -16,6 +16,7 @@
     "page": {
         "thumbnailTips": "¿Desea establecer la vista actual como miniatura del archivo?",
         "ok": "Aceptar",
-        "cancel": "Cancelar"
+        "cancel": "Cancelar",
+        "modules": "Módulos"
     }
 }

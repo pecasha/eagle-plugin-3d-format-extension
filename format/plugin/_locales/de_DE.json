@@ -16,6 +16,7 @@
     "page": {
         "thumbnailTips": "Aktuelle Ansicht als Datei-Miniaturansicht festlegen?",
         "ok": "OK",
-        "cancel": "Abbrechen"
+        "cancel": "Abbrechen",
+        "modules": "Module"
     }
 }

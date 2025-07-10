@@ -7,7 +7,9 @@ import json from "@rollup/plugin-json";
 const isProd = process.title.includes("--prod");
 
 const plugins = [
-    typescript(),
+    typescript({
+        tsconfig: "tsconfig.format.json"
+    }),
     json(),
     resolve(),
     commonjs()
@@ -19,13 +21,13 @@ if(isProd) {
 
 export default [
     {
-        input: "src/core/index.ts",
+        input: "format/core/index.ts",
         external: [
             "eagle",
             "i18next"
         ],
         output: {
-            file: "build/core.js",
+            file: "format/build/core.cjs",
             format: "cjs",
             inlineDynamicImports: true,
             globals: {

@@ -16,6 +16,7 @@
     "page": {
         "thumbnailTips": "要把当前画面设为文件缩略图吗？",
         "ok": "确定",
-        "cancel": "取消"
+        "cancel": "取消",
+        "modules": "模块"
     }
 }

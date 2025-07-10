@@ -57,5 +57,15 @@
                 "path": "viewer.html"
             }
         }
+    },
+    "main": {
+        "url": "index.html",
+        "width": 600,
+        "height": 500,
+        "fullscreenable": false,
+        "maximizable": false,
+        "resizable": false,
+        "frame": false,
+        "opacity": 0
     }
 }

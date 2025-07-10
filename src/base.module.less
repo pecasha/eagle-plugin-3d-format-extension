@@ -1,0 +1,59 @@
+/* 超出元素的多余文字不换行，将多余部分替换成... */
+.overflow() {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+/* 内容对齐 */
+.align(@position, @display:flex, @direction:1) {
+    display: @display;
+    & when (@position=v-center), (@position=center) {
+        align-items: center;
+    }
+    & when (@position=h-center), (@position=center) {
+        justify-content: center;
+    }
+    & when (@position=center) {
+        flex-wrap: wrap;
+        align-content: center;
+    }
+    & when (@position=top) {
+        align-items: flex-start;
+    }
+    & when (@position=bottom) {
+        align-items: flex-end;
+    }
+    & when (@position=left) {
+        justify-content: flex-start;
+    }
+    & when (@position=right) {
+        justify-content: flex-end;
+    }
+    & when (@position=h-space-between), (@position=v-space-between) {
+        justify-content: space-between;
+    }
+    & when (@position=h-space-around), (@position=v-space-around) {
+        justify-content: space-around;
+    }
+    & when (@position=v-space-between), (@position=v-space-around) {
+        flex-direction: column;
+    }
+    & when (iskeyword(@direction)) {
+        flex-direction: @direction;
+    }
+}
+
+/* 位置对齐 */
+.absolute(@position) {
+    position: absolute;
+    margin: auto;
+    & when (@position=c), (@position=cm) {
+        left: 0;
+        right: 0;
+    }
+    & when (@position=m), (@position=cm) {
+        top: 0;
+        bottom: 0;
+    }
+}

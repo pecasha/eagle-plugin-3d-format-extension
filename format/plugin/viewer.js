@@ -9,12 +9,12 @@ const filePath = urlParams.get("path");
 const suffix = filePath.substring(filePath.lastIndexOf(".") + 1);
 
 const THEME_COLOR = {
-    light: ["#f8f8f9", "#dfdfe0", "#888a95", "#2c2f32"],
-    lightgray: ["#dddee1", "#c7c7ca", "#6e8086", "#2c2f32"],
-    gray: ["#3b3c40", "#515255", "#94969c", "#f8f9fb"],
-    dark: ["#1f2023", "#363739", "#767b8a", "#f8f9fb"],
-    blue: ["#151d36", "#2c344b", "#40475d", "#f8f9fb"],
-    purple: ["#231b2b", "#393240", "#7a748e", "#f8f9fb"]
+    light: ["#fff", "#f8f8f9", "#dbdbdc", "#707479", "#2c2f32"],
+    lightgray: ["#e3e4e6", "#d9dadd", "#cccdcf", "#6b6f74", "#2c2f32"],
+    gray: ["#37383c", "#414246", "#505155", "#a9aaad", "#f8f9fb"],
+    dark: ["#18191c", "#242528", "#353639", "#9fa0a3", "#f8f9fb"],
+    blue: ["#0d1630", "#19223b", "#2b334a", "#9ca0a9", "#f8f9fb"],
+    purple: ["#1c1424", "#28202f", "#39313f", "#a19fa6", "#f8f9fb"]
 }
 
 const renderer = new Core({
@@ -35,10 +35,15 @@ const renderer = new Core({
         $error.parentElement.style.display = "block";
     }
     try {
-        document.documentElement.style.setProperty("--theme-bg-color", THEME_COLOR[theme][0]);
-        document.documentElement.style.setProperty("--theme-bd-color", THEME_COLOR[theme][1]);
-        document.documentElement.style.setProperty("--theme-ct-color", THEME_COLOR[theme][2]);
-        document.documentElement.style.setProperty("--theme-ft-color", THEME_COLOR[theme][3]);
+        [
+            "--theme-bg-color",
+            "--theme-mn-color",
+            "--theme-bd-color",
+            "--theme-ct-color",
+            "--theme-ft-color",
+        ].forEach((property ,i) => {
+            document.documentElement.style.setProperty(property, THEME_COLOR[theme][i]);
+        });
         const $loading = document.querySelector(".loading");
         $loading.classList.add(theme);
         renderer.preview.$on("error", async error => {

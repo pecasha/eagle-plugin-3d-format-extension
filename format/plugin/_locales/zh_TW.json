@@ -16,6 +16,7 @@
     "page": {
         "thumbnailTips": "要將目前畫面設為檔案縮圖嗎？",
         "ok": "確定",
-        "cancel": "取消"
+        "cancel": "取消",
+        "modules": "模組"
     }
 }

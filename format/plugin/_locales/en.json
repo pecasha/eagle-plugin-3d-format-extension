@@ -16,6 +16,7 @@
     "page": {
         "thumbnailTips": "Do you want to set the current view as the file thumbnail?",
         "ok": "OK",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "modules": "Modules"
     }
 }
