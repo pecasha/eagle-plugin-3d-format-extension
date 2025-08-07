@@ -1,6 +1,8 @@
-const { Core } = require("../core/index.ts");
+const { Core, machineId } = require("../core/index.ts");
 const fs = require("node:fs/promises");
 const path = require("node:path");
+const { webFrame } = require("electron");
+const zlib = require("node:zlib");
 
 const urlParams = new URLSearchParams(window.location.search);
 const id = urlParams.get("id");
@@ -61,16 +63,30 @@ const renderer = new Core({
         await fs.mkdir(moduleDir, {
             recursive: true
         });
-        const modules = await fs.readdir(moduleDir);
-        for(const file of modules.filter(file => file.endsWith(".module"))) {
-            const module = require(path.join(moduleDir, file));
-            if(module && module.name && module.version && typeof module.install === "function") {
-                module.install(renderer, {
-                    id,
-                    theme,
-                    filePath,
-                    suffix
-                });
+        const moduleFiles = await fs.readdir(moduleDir);
+        const modules = moduleFiles.filter(file => file.endsWith(".module"));
+        if(modules.length) {
+            const key = await machineId();
+            for(const filePath of modules) {
+                try {
+                    const file = await fs.readFile(path.join(moduleDir, filePath), "utf8");
+                    const code = zlib.gunzipSync(file).toString().split("").map((char, i) =>
+                        String.fromCharCode(char.charCodeAt(0) ^ key.charCodeAt(i % key.length))
+                    ).join("");
+                    const module = await webFrame.executeJavaScript(code);
+                    if(module && module.name && module.version && typeof module.install === "function") {
+                        module.install(renderer, {
+                            id,
+                            theme,
+                            filePath,
+                            suffix
+                        });
+                    } else {
+                        throw new Error();
+                    }
+                } catch {
+                    errorOutput((await renderer.i18n.get("error.module.loadFail")).replace("%s", filePath));
+                }
             }
         }
 

@@ -11,6 +11,9 @@
         },
         "core": {
             "textureMissing": "贴图缺失"
+        },
+        "module": {
+            "loadFail": "模块 %s 加载失败"
         }
     },
     "page": {
