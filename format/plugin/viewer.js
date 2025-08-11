@@ -110,6 +110,10 @@ const renderer = new Core({
 
         if(animationControlTips) {
             const $moduleTips = document.querySelector(".module-tips");
+            $moduleTips.querySelector(".tips-text").innerHTML = await renderer.i18n.get("modules.688c74030331bfb148e45bb9.tips");
+            $moduleTips.querySelector(".ignore").innerHTML = await renderer.i18n.get("page.noReminderToday");
+            $moduleTips.querySelector(".cancel").innerHTML = await renderer.i18n.get("page.cancel");
+            $moduleTips.querySelector(".ok").innerHTML = await renderer.i18n.get("page.ok");
             $moduleTips.querySelector("button.ignore").addEventListener("click", () => {
                 $moduleTips.classList.add("hide");
                 localStorage.AnimationControlTips = new Date().toLocaleDateString();
@@ -140,3 +144,4 @@ const renderer = new Core({
         eagle.dialog.showErrorBox(await renderer.i18n.get("error.common.title"), message);
     }
 })();
+

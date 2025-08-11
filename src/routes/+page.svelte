@@ -11,6 +11,11 @@
              alt={tAppName}>
         <p>{tAppName}</p>
     </header>
+    <ul class="list">
+        {#each menu as item, index}
+            <li class:active={menuIndex===index}>{item}</li>
+        {/each}
+    </ul>
 </div>
 <div class="body {theme}">
     <header>
@@ -20,6 +25,14 @@
             <CloseOutline/>
         </button>
     </header>
+    <div class="content"
+         class:loading={apiLoading}>
+        <ul class="products">
+            {#each list as item, index (item.id)}
+                <li>{i18next.t(`modules.${item.id}.name`)}</li>
+            {/each}
+        </ul>
+    </div>
 </div>
 
 
@@ -32,12 +45,12 @@
     import { setTimeout } from "node:timers/promises";
 
     const THEME_COLOR = {
-        light: ["#fff", "#f8f8f9", "#dbdbdc", "#707479", "#2c2f32"],
-        lightgray: ["#e3e4e6", "#d9dadd", "#cccdcf", "#6b6f74", "#2c2f32"],
-        gray: ["#37383c", "#414246", "#505155", "#a9aaad", "#f8f9fb"],
-        dark: ["#18191c", "#242528", "#353639", "#9fa0a3", "#f8f9fb"],
-        blue: ["#0d1630", "#19223b", "#2b334a", "#9ca0a9", "#f8f9fb"],
-        purple: ["#1c1424", "#28202f", "#39313f", "#a19fa6", "#f8f9fb"]
+        light: ["#fff", "#f8f8f9", "#dbdbdc", "#707479", "#2c2f32", "#eaeaec", "#dfe0e1"],
+        lightgray: ["#e3e4e6", "#d9dadd", "#cccdcf", "#6b6f74", "#2c2f32", "#d0d1d5", "#c7c9cb"],
+        gray: ["#37383c", "#414246", "#505155", "#a9aaad", "#f8f9fb", "#4b4c4f", "#535459"],
+        dark: ["#18191c", "#242528", "#353639", "#9fa0a3", "#f8f9fb", "#2f3033", "#393a3e"],
+        blue: ["#0d1630", "#19223b", "#2b334a", "#9ca0a9", "#f8f9fb", "#252d45", "#2f384f"],
+        purple: ["#1c1424", "#28202f", "#39313f", "#a19fa6", "#f8f9fb", "#332b3a", "#3d3644"]
     }
 
     let menu: string[] = [];
@@ -47,6 +60,9 @@
 
     let theme: keyof typeof THEME_COLOR = "light";
     let loading = true;
+    let apiLoading = true;
+
+    let list: any[] = [];
 
     onMount(async () => {
         if(eagle.app.theme === "Auto") {
@@ -66,6 +82,12 @@
         ];
         await eagle.window.setOpacity(1);
         loading = false;
+
+        try {
+            await getList();
+        } finally {
+            apiLoading = false;
+        }
     });
 
     const pluginTranslateInitialization = async () => {
@@ -88,14 +110,23 @@
             "--theme-border-color",
             "--theme-control-color",
             "--theme-font-color",
+            "--theme-hover-color",
+            "--theme-active-color"
         ].forEach((property ,i) => {
             document.documentElement.style.setProperty(property, THEME_COLOR[theme][i]);
         });
     }
+
+    const getList = async () => {
+        const res = await fetch("https://api.eagle.pome.run/product/list?id=688c73720331bfb148e45bb7");
+        const json = await res.json();
+        list = json.data;
+        console.log(list);
+    }
 </script>
 
 <style lang="less">
-    @import "../base.module";
+    @import "../styles/base.module";
 
     :root {
         --theme-background-color: #fff;
@@ -103,6 +134,8 @@
         --theme-border-color: #dbdbdc;
         --theme-control-color: #707479;
         --theme-font-color: #2c2f32;
+        --theme-hover-color: #eaeaec;
+        --theme-active-color: #dfe0e1;
     }
 
     :global(*) {
@@ -112,6 +145,7 @@
         outline: 0;
         zoom: 1;
         resize: none;
+        list-style-type: none;
         -webkit-text-size-adjust: none;
         font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, "-apple-system", sans-serif;
         -webkit-font-smoothing: antialiased;
@@ -120,6 +154,7 @@
         -webkit-touch-callout: none;
         box-sizing: border-box;
         user-select: none;
+        interpolate-size: allow-keywords;
     }
     :global(html),
     :global(body) {
@@ -178,10 +213,33 @@
                 transition: color ease .3s;
             }
         }
+        .list {
+            flex: 1;
+            width: 100%;
+            height: 0;
+            padding: 0 10px;
+            > li {
+                .align(v-center);
+                width: 100%;
+                height: 30px;
+                padding: 0 10px;
+                border-radius: 4px;
+                font-size: 12px;
+                color: var(--theme-font-color);
+                transition: background-color ease .1s;
+                &:hover {
+                    background-color: var(--theme-hover-color);
+                }
+                &.active {
+                    background-color: var(--theme-active-color);
+                }
+            }
+        }
     }
 
     .body {
         display: flex;
+        flex-direction: column;
         flex: 1;
         width: 0;
         height: 100%;
@@ -219,6 +277,44 @@
                 :global(> svg) {
                     width: 16px;
                     height: 16px;
+                }
+            }
+        }
+        .content {
+            position: relative;
+            flex: 1;
+            width: 100%;
+            height: 0;
+            padding: 10px;
+            &.loading {
+                &::before {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background-color: var(--theme-background-color);
+                }
+                &::after {
+                    .absolute(cm);
+                    z-index: 5;
+                    content: "";
+                    width: 20px;
+                    padding: 4px;
+                    aspect-ratio: 1;
+                    border-radius: 50%;
+                    background: #9aa2f9;
+                    --_m: conic-gradient(#0000 10%, #000), linear-gradient(#000 0 0) content-box;
+                    -webkit-mask: var(--_m);
+                    mask: var(--_m);
+                    -webkit-mask-composite: source-out;
+                    mask-composite: subtract;
+                    animation: l3 1s infinite linear;
+                }
+                @keyframes l3 {
+                    to {
+                        transform: rotate(1turn);
+                    }
                 }
             }
         }
