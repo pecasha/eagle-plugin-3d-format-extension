@@ -78,7 +78,7 @@ const renderer = new Core({
         const moduleFiles = await fs.readdir(moduleDir);
         const modules = moduleFiles.filter(file => file.endsWith(".module"));
         if(modules.length) {
-            const deviceId = await machineId();
+            const deviceId = await machineId(true);
             for(const filePath of modules) {
                 try {
                     const configFile = await fs.readFile(path.join(moduleDir, filePath + ".conf"), "utf8");

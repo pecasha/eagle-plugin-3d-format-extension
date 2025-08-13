@@ -22,7 +22,9 @@
         "cancel": "取消",
         "modules": "模块",
         "version": "版本",
-        "noReminderToday": "今日不再提醒"
+        "noReminderToday": "今日不再提醒",
+        "purchase": "购买",
+        "activation": "激活"
     },
     "modules": {
         "688c74030331bfb148e45bb9": {

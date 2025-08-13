@@ -26,7 +26,7 @@
         "@pecasha/3d-preview-core": "^1.4.5",
         "@pomerun/util": "^1.2.2",
         "jimp": "^1.6.0",
-        "machine-id2": "^1.0.3"
+        "node-machine-id": "^1.1.12"
     },
     "devDependencies": {
         "@rollup/plugin-commonjs": "^28.0.6",

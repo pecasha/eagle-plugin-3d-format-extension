@@ -17,9 +17,9 @@ importers:
       jimp:
         specifier: ^1.6.0
         version: 1.6.0
-      machine-id2:
-        specifier: ^1.0.3
-        version: 1.0.3
+      node-machine-id:
+        specifier: ^1.1.12
+        version: 1.1.12
     devDependencies:
       '@rollup/plugin-commonjs':
         specifier: ^28.0.6
@@ -1883,9 +1883,6 @@ packages:
     resolution: {integrity: sha512-CQl19J/g+Hbjbv4Y3mFNNXFEL/5t/KCg8POCuUqd4rMKjGG+j1ybER83hxV58zL+dFI1PTkt3GNFSHRt+d8qEQ==}
     engines: {node: 14 || >=16.14}
 
-  machine-id2@1.0.3:
-    resolution: {integrity: sha512-QIlgiHrXytyHn/FWgwnDPIW0SQ2pXMQnH+6zOgbyl5ktooSmtDqR+PZL2LzPr1NUEbck39JhXLbEKUeCaXmXbg==}
-
   magic-string@0.30.17:
     resolution: {integrity: sha512-sNPKHvyjVf7gyjwS4xGTaW/mCnF8wnjtifKBEhxfZ7E/S8tQ0rssrwGNn6q8JH/ohItJfSQp9mBtQYuTlH5QnA==}
 
@@ -1992,9 +1989,6 @@ packages:
     resolution: {integrity: sha512-fpoe2T0RbHwBTBUOftAfBPaDEi06ufaUai0mE6Yn1kacc3SnTErfb/h+X94VXzI64rKFHYImXSvdwGGCmwOqCA==}
     engines: {node: '>=0.10.0'}
 
-  native-reg@0.3.6:
-    resolution: {integrity: sha512-ZkwWg509pUVXysRwZO1PQSB69BjP1/+wp6qMo1o6nkXp04ezNe27DV5Cxk5UgYlOECTDihezSom+oRjfRfSbJg==}
-
   needle@3.3.1:
     resolution: {integrity: sha512-6k0YULvhpw+RoLNiQCRKOl09Rv1dPLr8hHnVjHqdolKwDrdNyk+Hmrthi4lIGPPz3r39dLx0hsF5s40sZ3Us4Q==}
     engines: {node: '>= 4.4.x'}
@@ -2006,9 +2000,8 @@ packages:
   no-case@2.3.2:
     resolution: {integrity: sha512-rmTZ9kz+f3rCvK2TD1Ue/oZlns7OGoIWP4fc3llxxRXlOkHKoWPPWJOfFYpITabSow43QJbRIoHQXtt10VldyQ==}
 
-  node-gyp-build@4.8.4:
-    resolution: {integrity: sha512-LA4ZjwlnUblHVgq0oBF3Jl/6h/Nvs5fzBLwdEF4nuxnFdsfajde4WfxtJr3CaiH+F6ewcIB/q4jQ4UzPyid+CQ==}
-    hasBin: true
+  node-machine-id@1.1.12:
+    resolution: {integrity: sha512-QNABxbrPa3qEIfrE6GOJ7BYIuignnJw7iQ2YPbc3Nla1HzRJjXzZOiikfF8m7eAMfichLt3M4VgLOetqgDmgGQ==}
 
   nopt@7.2.1:
     resolution: {integrity: sha512-taM24ViiimT/XntxbPyJQzCG+p4EKOpgD3mxFwW38mGjVUrfERQOeY4EDHjdnptttfHuHQXFx+lTP08Q+mLa/w==}
@@ -4824,10 +4817,6 @@ snapshots:
 
   lru-cache@10.3.0: {}
 
-  machine-id2@1.0.3:
-    dependencies:
-      native-reg: 0.3.6
-
   magic-string@0.30.17:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.0
@@ -4944,10 +4933,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  native-reg@0.3.6:
-    dependencies:
-      node-gyp-build: 4.8.4
-
   needle@3.3.1:
     dependencies:
       iconv-lite: 0.6.3
@@ -4960,7 +4945,7 @@ snapshots:
     dependencies:
       lower-case: 1.1.4
 
-  node-gyp-build@4.8.4: {}
+  node-machine-id@1.1.12: {}
 
   nopt@7.2.1:
     dependencies:

@@ -28,8 +28,16 @@
     <div class="content"
          class:loading={apiLoading}>
         <ul class="products">
-            {#each list as item, index (item.id)}
-                <li>{i18next.t(`modules.${item.id}.name`)}</li>
+            {#each list as item}
+                <li>
+                    <div class="left">
+                        <span>ver {item.version}</span>
+                        <p on:click={moduleDetail}>{i18next.t(`modules.${item.id}.name`)}</p>
+                    </div>
+                    <div class="right">
+
+                    </div>
+                </li>
             {/each}
         </ul>
     </div>
@@ -43,6 +51,9 @@
         CloseOutline
     } from "flowbite-svelte-icons";
     import { setTimeout } from "node:timers/promises";
+    import path from "node:path";
+    import fs from "node:fs/promises";
+    import { machineId } from "node-machine-id";
 
     const THEME_COLOR = {
         light: ["#fff", "#f8f8f9", "#dbdbdc", "#707479", "#2c2f32", "#eaeaec", "#dfe0e1"],
@@ -52,6 +63,12 @@
         blue: ["#0d1630", "#19223b", "#2b334a", "#9ca0a9", "#f8f9fb", "#252d45", "#2f384f"],
         purple: ["#1c1424", "#28202f", "#39313f", "#a19fa6", "#f8f9fb", "#332b3a", "#3d3644"]
     }
+
+
+    let moduleDir = "";
+    let moduleKeys: Record<string, string> = {};
+    let moduleConfig: Record<string, any> = {};
+    let deviceId = undefined as unknown as string;
 
     let menu: string[] = [];
     let menuIndex = 0;
@@ -84,7 +101,10 @@
         loading = false;
 
         try {
-            await getList();
+            await Promise.all([
+                modulesInit(),
+                getList()
+            ]);
         } finally {
             apiLoading = false;
         }
@@ -117,11 +137,59 @@
         });
     }
 
+    const modulesInit = async () => {
+        deviceId ??= await machineId(true);
+        moduleDir = path.join(__dirname, "modules");
+        await fs.mkdir(moduleDir, {
+            recursive: true
+        });
+        const moduleFiles = await fs.readdir(moduleDir);
+        const modules = moduleFiles.filter(file => file.endsWith(".module.conf"));
+        if(modules.length) {
+            for(const filePath of modules) {
+                const configFile = await fs.readFile(path.join(moduleDir, filePath), "utf8");
+                const config = JSON.parse(configFile);
+                moduleConfig[config.id] = config;
+                moduleKeys[config.id] = config.key;
+            }
+        }
+    }
+
+    const moduleActive = async (id: string, key: string, email: string) => {
+        const res = await fetch("https://api.eagle.pome.run/app/active", {
+            method: "POST",
+            body: JSON.stringify({
+                deviceId,
+                key,
+                productId: id,
+                email
+            })
+        });
+        if(res.status === 400) {
+            const err = await res.json();
+            eagle.dialog.showErrorBox(i18next.t("error.common.title"), err.message);
+            return;
+        }
+        if(res.status !== 200) {
+            eagle.dialog.showErrorBox(i18next.t("error.common.title"), res.statusText);
+            return;
+        }
+        await fs.writeFile(path.join(moduleDir, `${id}.module`), await res.bytes());
+        await fs.writeFile(path.join(moduleDir, `${id}.module.conf`), JSON.stringify({
+            id,
+            key,
+            email
+        }), "utf8");
+    }
+
     const getList = async () => {
         const res = await fetch("https://api.eagle.pome.run/product/list?id=688c73720331bfb148e45bb7");
         const json = await res.json();
         list = json.data;
-        console.log(list);
+    }
+
+    const moduleDetail = () => {
+        eagle.shell.openExternal("https://3d.pecasha.com/modules/animation-control");
     }
 </script>
 
@@ -288,6 +356,8 @@
             padding: 10px;
             &.loading {
                 &::before {
+                    z-index: 5;
+                    content: "";
                     position: absolute;
                     top: 0;
                     left: 0;
@@ -297,7 +367,7 @@
                 }
                 &::after {
                     .absolute(cm);
-                    z-index: 5;
+                    z-index: 10;
                     content: "";
                     width: 20px;
                     padding: 4px;
@@ -314,6 +384,42 @@
                 @keyframes l3 {
                     to {
                         transform: rotate(1turn);
+                    }
+                }
+            }
+            .products {
+                width: 100%;
+                overflow: hidden;
+                border-radius: 6px;
+                border: 1px solid var(--theme-border-color);
+                > li {
+                    .align(v-center);
+                    .align(h-space-between);
+                    width: 100%;
+                    padding: 12px 10px;
+                    line-height: 1;
+                    color: var(--theme-font-color);
+                    &:nth-child(1n) {
+                        background-color: var(--theme-main-color);
+                    }
+                    .left,
+                    .right {
+                        .align(v-center);
+                    }
+                    .left {
+                        > span {
+                            .align(v-center, inline-flex);
+                            margin-right: 4px;
+                            padding: 2px 4px;
+                            line-height: 1;
+                            background-color: var(--theme-active-color);
+                            border-radius: 2px;
+                            font-size: 10px;
+                        }
+                        > p {
+                            font-size: 12px;
+                            cursor: pointer;
+                        }
                     }
                 }
             }

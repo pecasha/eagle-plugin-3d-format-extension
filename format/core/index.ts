@@ -3,7 +3,7 @@ import Base from "./modules/base";
 import path from "path";
 import { Jimp } from "jimp";
 export { timestampToCountdown } from "@pomerun/util";
-export { machineId } from "machine-id2";
+export { machineId } from "node-machine-id";
 
 export class Core extends Base {
     #previewCore = {} as PreviewCore;
