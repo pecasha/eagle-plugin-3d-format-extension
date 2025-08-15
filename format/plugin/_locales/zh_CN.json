@@ -24,7 +24,8 @@
         "version": "版本",
         "noReminderToday": "今日不再提醒",
         "purchase": "购买",
-        "activation": "激活"
+        "activation": "激活",
+        "activationCodeInputPlaceholder": "请输入激活码"
     },
     "modules": {
         "688c74030331bfb148e45bb9": {

@@ -32,43 +32,74 @@
                 <li>
                     <div class="left">
                         <span>ver {item.version}</span>
-                        <p on:click={moduleDetail}>{i18next.t(`modules.${item.id}.name`)}</p>
+                        <button on:click={moduleDetail}>{i18next.t(`modules.${item.id}.name`)}</button>
                     </div>
                     <div class="right">
-
+                        {#if moduleKeys[item.id]}
+                            <span class="key">{moduleKeys[item.id]}</span>
+                        {:else}
+                            <div class="btn">
+                                <button on:click={purchase}>{i18next.t("page.purchase")}</button>
+                                <button>{i18next.t("page.activation")}</button>
+                            </div>
+                        {/if}
                     </div>
                 </li>
             {/each}
         </ul>
     </div>
 </div>
-
+{#if activationInputModal}
+    <div class="activation-input {theme}"
+         on:click|self={()=>activationInputModal=false}
+         transition:fade>
+        <div class="activation-input-box">
+            <input type="text"
+                   placeholder="{i18next.t('page.activationCodeInputPlaceholder')}"
+                   bind:value={activationInput}>
+            <button>{i18next.t("page.ok")}</button>
+        </div>
+    </div>
+{/if}
 
 <script lang="ts">
     import { onMount } from "svelte";
     import { fade, fly } from "svelte/transition";
     import {
-        CloseOutline
+        CloseOutline,
+        CheckCircleSolid,
+        CloseCircleSolid
     } from "flowbite-svelte-icons";
     import { setTimeout } from "node:timers/promises";
     import path from "node:path";
     import fs from "node:fs/promises";
     import { machineId } from "node-machine-id";
 
-    const THEME_COLOR = {
-        light: ["#fff", "#f8f8f9", "#dbdbdc", "#707479", "#2c2f32", "#eaeaec", "#dfe0e1"],
-        lightgray: ["#e3e4e6", "#d9dadd", "#cccdcf", "#6b6f74", "#2c2f32", "#d0d1d5", "#c7c9cb"],
-        gray: ["#37383c", "#414246", "#505155", "#a9aaad", "#f8f9fb", "#4b4c4f", "#535459"],
-        dark: ["#18191c", "#242528", "#353639", "#9fa0a3", "#f8f9fb", "#2f3033", "#393a3e"],
-        blue: ["#0d1630", "#19223b", "#2b334a", "#9ca0a9", "#f8f9fb", "#252d45", "#2f384f"],
-        purple: ["#1c1424", "#28202f", "#39313f", "#a19fa6", "#f8f9fb", "#332b3a", "#3d3644"]
+    enum BUTTON_STATUS {
+        DEFAULT,
+        LOADING,
+        COMPLETE,
+        FAIL
     }
 
+    const THEME_COLOR = {
+        light: ["#fff", "#f8f8f9", "#dbdbdc", "#707479", "#2c2f32", "#eaeaec", "#dfe0e1", "#fafafb", "#f9f9fa", "#d5d5d5"],
+        lightgray: ["#e3e4e6", "#d9dadd", "#cccdcf", "#6b6f74", "#2c2f32", "#d0d1d5", "#c7c9cb", "#e6e6e9", "#e4e5e7", "#c3c4c6"],
+        gray: ["#37383c", "#414246", "#505155", "#a9aaad", "#f8f9fb", "#4b4c4f", "#535459", "#3d3e42", "#47484c", "#515256"],
+        dark: ["#18191c", "#242528", "#353639", "#9fa0a3", "#f8f9fb", "#2f3033", "#393a3e", "#222326", "#2d2e31", "#393a3c"],
+        blue: ["#0d1630", "#19223b", "#2b334a", "#9ca0a9", "#f8f9fb", "#252d45", "#2f384f", "#182038", "#242b42", "#30374c"],
+        purple: ["#1c1424", "#28202f", "#39313f", "#a19fa6", "#f8f9fb", "#332b3a", "#3d3644", "#261f2c", "#302a38", "#3c3642"]
+    }
 
     let moduleDir = "";
     let moduleKeys: Record<string, string> = {};
     let moduleConfig: Record<string, any> = {};
     let deviceId = undefined as unknown as string;
+
+    let activateUnable = false;
+    let activationInputModal = false;
+    let activationInput = "";
+    let activationInputConfirmStatus = BUTTON_STATUS.DEFAULT;
 
     let menu: string[] = [];
     let menuIndex = 0;
@@ -131,7 +162,10 @@
             "--theme-control-color",
             "--theme-font-color",
             "--theme-hover-color",
-            "--theme-active-color"
+            "--theme-active-color",
+            "--theme-button-color",
+            "--theme-button-hover-color",
+            "--theme-button-border-color"
         ].forEach((property ,i) => {
             document.documentElement.style.setProperty(property, THEME_COLOR[theme][i]);
         });
@@ -139,6 +173,9 @@
 
     const modulesInit = async () => {
         deviceId ??= await machineId(true);
+        if(!deviceId) {
+            activateUnable = true;
+        }
         moduleDir = path.join(__dirname, "modules");
         await fs.mkdir(moduleDir, {
             recursive: true
@@ -146,11 +183,31 @@
         const moduleFiles = await fs.readdir(moduleDir);
         const modules = moduleFiles.filter(file => file.endsWith(".module.conf"));
         if(modules.length) {
-            for(const filePath of modules) {
-                const configFile = await fs.readFile(path.join(moduleDir, filePath), "utf8");
+            for(const configPath of modules) {
+                const configFile = await fs.readFile(path.join(moduleDir, configPath), "utf8");
                 const config = JSON.parse(configFile);
-                moduleConfig[config.id] = config;
-                moduleKeys[config.id] = config.key;
+                if(config.id) {
+                    moduleConfig[config.id] = config;
+                    if(config.key) {
+                        moduleKeys[config.id] = config.key;
+                    }
+                }
+                const filePath = path.join(moduleDir, configPath.replace(".conf", ""));
+                try {
+                    await fs.access(filePath);
+                } catch {
+                    if(config.id && config.key && config.email) {
+                        await moduleActive(config.id, config.key, config.email);
+                    } else {
+                        await fs.unlink(filePath);
+                        if(config.id) {
+                            delete moduleConfig[config.id];
+                            if(config.key) {
+                                delete moduleKeys[config.id];
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -191,6 +248,10 @@
     const moduleDetail = () => {
         eagle.shell.openExternal("https://3d.pecasha.com/modules/animation-control");
     }
+
+    const purchase = () => {
+        eagle.shell.openExternal("https://www.creem.io/payment/prod_3zRFIWTTIqhDDU5LVjnRmi");
+    }
 </script>
 
 <style lang="less">
@@ -204,6 +265,9 @@
         --theme-font-color: #2c2f32;
         --theme-hover-color: #eaeaec;
         --theme-active-color: #dfe0e1;
+        --theme-button-color: #fafafb;
+        --theme-button-hover-color: #f9f9fa;
+        --theme-button-border-color: #d5d5d5;
     }
 
     :global(*) {
@@ -416,12 +480,78 @@
                             border-radius: 2px;
                             font-size: 10px;
                         }
-                        > p {
+                        > button {
+                            background-color: transparent;
                             font-size: 12px;
                             cursor: pointer;
                         }
                     }
+                    .right {
+                        .btn {
+                            .align(v-center);
+                            gap: 10px;
+                            > button {
+                                .align(v-center, inline-flex);
+                                padding: 4px 6px;
+                                line-height: 1;
+                                background-color: var(--theme-button-color);
+                                border: 1px solid var(--theme-button-border-color);
+                                transition: background-color ease .1s;
+                                border-radius: 4px;
+                                font-size: 11px;
+                                cursor: pointer;
+                                color: var(--theme-font-color);
+                                &:hover {
+                                    background-color: var(--theme-button-hover-color);
+                                }
+                            }
+                        }
+                    }
                 }
+            }
+        }
+    }
+
+    .activation-input {
+        .align(center);
+        z-index: 999;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255,255,255,.2);
+        &.light,
+        &.lightgray {
+            background-color: rgba(0,0,0,.5);
+        }
+        &-box {
+            .align(center);
+            width: 400px;
+            height: 60px;
+            padding: 10px;
+            gap: 10px;
+            border-radius: 8px;
+            background-color: var(--theme-background-color);
+            > input,
+            > button {
+                height: 100%;
+                line-height: 1;
+                border-radius: 4px;
+                background-color: var(--theme-button-color);
+                border: 1px solid var(--theme-button-border-color);
+                font-size: 12px;
+                color: var(--theme-font-color);
+            }
+            > input {
+                .align(v-center);
+                flex: 1;
+                width: 0;
+                padding: 0 8px;
+            }
+            > button {
+                .align(center);
+                width: 70px;
             }
         }
     }
